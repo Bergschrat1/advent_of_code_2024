@@ -35,8 +35,13 @@
             })
           ];
         };
+        # Go settings
+        goVersion = 23;
       in
       {
+        overlays.default = final: prev: {
+          go = final."go_1_${toString goVersion}";
+        };
         packages.default = pkgs.myapp;
         devShells = {
           # Shell for app dependencies.
@@ -45,7 +50,19 @@
           #
           # Use this shell for developing your app.
           default = pkgs.mkShell {
-            inputsFrom = [ pkgs.myapp ];
+            inputsFrom = [ 
+            pkgs.myapp 
+            ];
+            packages = with pkgs; [
+              # go (version is specified by overlay)
+              go
+              # goimports, godoc, etc.
+              gotools
+              # https://github.com/golangci/golangci-lint
+              golangci-lint
+              # lsp
+              gopls
+            ];
           };
 
           # Shell for poetry.
