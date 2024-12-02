@@ -1,8 +1,10 @@
-from aocd import data
 import numpy as np
 import pandas as pd
+from pathlib import Path
 
-lines = data.split('\n')
+input_path = Path(__file__).parent.parent / "inputs" / Path(__file__).with_suffix(".txt").name
+with open(input_path, "r") as f:
+    lines = f.readlines()
 
 num_l = []
 num_r = []
